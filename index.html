@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Athar Labs</title>
+<meta name="description" content="Athar Labs is a small independent studio making calm apps for focus and study. Home of Nayla, the study tracker that tells you what to revise next.">
+<link rel="icon" href="nayla/img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Figtree:wght@400;500;600&family=Reem+Kufi:wght@500&display=swap">
+<style>
+  :root {
+    --ground: #F2F3F0;
+    --surface: #FBFBF9;
+    --ink: #1F2427;
+    --muted: #5C6769;
+    --line: #DADFDA;
+    --accent: #4E6F72;
+    --trace: #AFC3BC;
+    --glow: #E7ECE6;
+    --nayla-peach: #F7D0AB;
+    --nayla-sage: #AFC9BF;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #141819;
+      --surface: #1B2122;
+      --ink: #E7ECEA;
+      --muted: #9AA8A7;
+      --line: #2C3536;
+      --accent: #9CC0BA;
+      --trace: #3F5552;
+      --glow: #1F2829;
+      --nayla-peach: #6E5644;
+      --nayla-sage: #3F5A52;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #141819;
+    --surface: #1B2122;
+    --ink: #E7ECEA;
+    --muted: #9AA8A7;
+    --line: #2C3536;
+    --accent: #9CC0BA;
+    --trace: #3F5552;
+    --glow: #1F2829;
+    --nayla-peach: #6E5644;
+    --nayla-sage: #3F5A52;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 1.0625rem/1.65 "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(68rem, 100% - 2rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header { padding: 1.5rem 0; }
+  .brand { display: inline-flex; align-items: baseline; gap: .6rem; text-decoration: none; color: var(--ink); }
+  .brand b { font: 650 1.15rem/1 "Bricolage Grotesque", "Figtree", sans-serif; letter-spacing: -.01em; }
+  .brand span { font: 500 1.05rem/1 "Reem Kufi", "Geeza Pro", "Noto Kufi Arabic", sans-serif; color: var(--muted); }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 5vw, 4rem); }
+  .hero .ar {
+    position: absolute; right: -.05em; top: 50%; transform: translateY(-58%);
+    font: 500 clamp(9rem, 30vw, 22rem)/1 "Reem Kufi", "Geeza Pro", "Noto Kufi Arabic", sans-serif;
+    color: var(--glow); user-select: none; pointer-events: none; z-index: 0;
+  }
+  .hero > *:not(.ar) { position: relative; z-index: 1; }
+  .eyebrow { font: 600 .78rem/1 "Figtree", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 1.25rem; }
+  h1 {
+    font: 650 clamp(2.4rem, 6.4vw, 4.6rem)/1.04 "Bricolage Grotesque", "Figtree", sans-serif;
+    letter-spacing: -.03em; margin: 0; max-width: 14ch; text-wrap: balance;
+  }
+  .lede { max-width: 38rem; color: var(--muted); font-size: 1.15rem; margin: 1.5rem 0 0; }
+
+  /* the trace: a dotted path that walks from the hero to the apps */
+  .trail { display: block; width: 100%; height: 120px; margin-top: 1rem; overflow: visible; }
+  .trail path.dots { fill: none; stroke: var(--trace); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 0 16; }
+  .trail path.reveal { fill: none; stroke: #fff; stroke-width: 14; stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: walk 2.6s .4s cubic-bezier(.45,.05,.3,1) forwards; }
+  @keyframes walk { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .trail path.reveal { animation: none; stroke-dashoffset: 0; } }
+
+  /* ---------- apps ---------- */
+  section { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+  h2 { font: 650 clamp(1.6rem, 3.4vw, 2.2rem)/1.15 "Bricolage Grotesque", "Figtree", sans-serif; letter-spacing: -.02em; margin: 0 0 1.75rem; text-wrap: balance; }
+
+  .app {
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; align-items: center;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 28px;
+    padding: clamp(1.5rem, 4vw, 3rem); overflow: hidden; position: relative;
+  }
+  .app::before {
+    content: ""; position: absolute; width: 26rem; height: 26rem; right: -6rem; bottom: -10rem; border-radius: 50%;
+    background: radial-gradient(circle, var(--nayla-peach) 0%, transparent 62%); opacity: .55; pointer-events: none;
+  }
+  .app::after {
+    content: ""; position: absolute; width: 22rem; height: 22rem; right: 9rem; top: -9rem; border-radius: 50%;
+    background: radial-gradient(circle, var(--nayla-sage) 0%, transparent 62%); opacity: .5; pointer-events: none;
+  }
+  .app > * { position: relative; z-index: 1; }
+  .app-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .app-head img { width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 1px 0 var(--line), 0 6px 18px rgb(0 0 0 / .08); }
+  .app-head h3 { font: 650 1.9rem/1 "Bricolage Grotesque", "Figtree", sans-serif; letter-spacing: -.02em; margin: 0; }
+  .app-head p { margin: .3rem 0 0; color: var(--muted); font-size: .95rem; }
+  .app .pitch { font-size: 1.2rem; line-height: 1.5; margin: 0 0 1rem; max-width: 30rem; text-wrap: pretty; }
+  .app .detail { color: var(--muted); margin: 0 0 1.75rem; max-width: 30rem; }
+  .row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem; text-decoration: none;
+    background: var(--ink); color: var(--ground); font-weight: 600; padding: .8rem 1.3rem; border-radius: 999px;
+    transition: transform .2s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .pill { font-size: .85rem; font-weight: 600; color: var(--muted); border: 1px solid var(--line); padding: .45rem .85rem; border-radius: 999px; }
+
+  .phones { display: flex; justify-content: center; gap: 1rem; }
+  .phone {
+    width: min(42%, 200px); aspect-ratio: 600 / 1304; border-radius: 28px; overflow: hidden;
+    border: 6px solid #262626; background: #262626; box-shadow: 0 18px 40px rgb(0 0 0 / .16);
+  }
+  .phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .phone:nth-child(2) { transform: translateY(2.5rem); }
+
+  .next { margin-top: 1rem; border: 1.5px dashed var(--line); border-radius: 22px; padding: 1.25rem 1.5rem; color: var(--muted); display: flex; gap: .75rem; align-items: center; }
+  .next svg { flex: none; }
+
+  /* ---------- about / contact ---------- */
+  .about { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
+  .about .word { font: 500 clamp(4rem, 12vw, 7rem)/1 "Reem Kufi", "Geeza Pro", "Noto Kufi Arabic", sans-serif; color: var(--accent); }
+  .about p { margin: 0 0 1rem; max-width: 36rem; }
+  .about p.muted { color: var(--muted); }
+  .contact { border-top: 1px solid var(--line); }
+  .contact a.mail { font: 650 clamp(1.3rem, 3.5vw, 1.9rem)/1.2 "Bricolage Grotesque", "Figtree", sans-serif; color: var(--ink); word-break: break-word; }
+  footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
+
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+    .phones { order: -1; padding-bottom: 2.5rem; }
+    .about { grid-template-columns: 1fr; }
+    .trail { height: 80px; }
+  }
+</style>
+</head>
+<body>
+  <header class="wrap">
+    <a class="brand" href="./" aria-label="Athar Labs home"><b>Athar Labs</b><span lang="ar">أثر</span></a>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <span class="ar" lang="ar" aria-hidden="true">أثر</span>
+      <p class="eyebrow">An independent app studio</p>
+      <h1>Small, calm apps that leave a good mark.</h1>
+      <p class="lede">We make focused tools for everyday life, starting with studying. No ads, no noise, nothing that asks for more of your attention than it gives back.</p>
+      <svg class="trail" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <mask id="walk"><path class="reveal" d="M8 20 C 220 20, 300 100, 520 92 S 860 40, 992 110" /></mask>
+        </defs>
+        <path class="dots" mask="url(#walk)" d="M8 20 C 220 20, 300 100, 520 92 S 860 40, 992 110" />
+      </svg>
+    </div>
+
+    <section class="wrap" id="apps" aria-labelledby="apps-title">
+      <h2 id="apps-title">Our apps</h2>
+
+      <article class="app">
+        <div>
+          <div class="app-head">
+            <img src="nayla/img/icon-180.png" alt="" width="64" height="64">
+            <div>
+              <h3>Nayla</h3>
+              <p>Study tracker · Android</p>
+            </div>
+          </div>
+          <p class="pitch">Know what to study next, not just how long you studied.</p>
+          <p class="detail">A focus timer that locks distracting apps, asks how well you understood each lesson, and tells you which one to revise next.</p>
+          <div class="row">
+            <a class="btn" href="nayla/">Meet Nayla <span aria-hidden="true">→</span></a>
+            <span class="pill">Coming soon to Google Play</span>
+          </div>
+        </div>
+        <div class="phones" aria-hidden="true">
+          <div class="phone"><img src="nayla/img/home.webp" alt="" loading="lazy"></div>
+          <div class="phone"><img src="nayla/img/stats.webp" alt="" loading="lazy"></div>
+        </div>
+      </article>
+
+      <div class="next">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="4" cy="11" r="2.5" fill="currentColor" opacity=".35"/><circle cx="11" cy="11" r="2.5" fill="currentColor" opacity=".6"/><circle cx="18" cy="11" r="2.5" fill="currentColor"/></svg>
+        <span>More apps on the way.</span>
+      </div>
+    </section>
+
+    <section class="wrap" id="about" aria-labelledby="about-title">
+      <div class="about">
+        <div class="word" lang="ar" aria-hidden="true">أثر</div>
+        <div>
+          <h2 id="about-title">Why “Athar”</h2>
+          <p><em>Athar</em> (أثر) is Arabic for a trace: the mark something leaves behind after it has passed. It’s the test we hold every app to. When you put it down, it should have left something good: an hour of real work done, a lesson finally understood.</p>
+          <p class="muted">Athar Labs is a one-person studio. Every app is designed, built and supported by the same person.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap contact" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Say hello</h2>
+      <p><a class="mail" href="mailto:atharlabs.apps@gmail.com">atharlabs.apps@gmail.com</a></p>
+      <p style="color: var(--muted); margin: 0;">Questions, ideas, or something not working: write any time.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>© 2026 Athar Labs</span>
+    <span><a href="nayla/">Nayla</a> · <a href="nayla/privacy-policy.html">Nayla privacy policy</a></span>
+  </footer>
+</body>
+</html>
